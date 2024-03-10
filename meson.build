@@ -1,14 +1,8 @@
 project('raymarching', 'cpp', version: '0.1.0')
 
-dependencies  = [
-    dependency('libavcodec')
-  , dependency('libavformat')
-  , dependency('libavutil')
-  , dependency('libswscale')
-  ]
+dependencies  = []
 sources       = []
-# include       = include_directories('include')
-include       = include_directories()
+include       = include_directories('include')
 
 raymarching_dep = declare_dependency(
     dependencies        : dependencies
