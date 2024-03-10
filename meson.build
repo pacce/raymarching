@@ -1,6 +1,6 @@
 project('raymarching', 'cpp', version: '0.1.0')
 
-dependencies  = []
+dependencies  = [dependency('libpng')]
 sources       = []
 include       = include_directories('include')
 
@@ -9,4 +9,4 @@ raymarching_dep = declare_dependency(
   , include_directories : include
   )
 
-executable('main', 'source/main.cpp', dependencies: dependencies)
+executable('main', 'source/main.cpp', dependencies: [raymarching_dep])

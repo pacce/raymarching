@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Artifacts
+*.png
+
 # Meson
 subprojects/**/
 compile_commands.json
