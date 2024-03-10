@@ -3,6 +3,7 @@
 
 #include "raymarching-colors.hpp"
 #include "raymarching-png.hpp"
+#include "raymarching-shape.hpp"
 
 namespace raymarching {
 } // namespace raymarching
