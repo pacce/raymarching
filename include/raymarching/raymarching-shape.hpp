@@ -1,8 +1,8 @@
 #ifndef RAYMARCHING_SHAPE_HPP__
 #define RAYMARCHING_SHAPE_HPP__
 
-#include <geometry/geometry.hpp>
 #include <variant>
+#include "raymarching-geometry.hpp"
 
 namespace raymarching {
 namespace shape {
@@ -10,7 +10,7 @@ namespace shape {
     class Sphere {
         static_assert(std::is_floating_point<T>::value);
         public:
-            Sphere(const geometry::d3::Point<T>& center, T radius) 
+            Sphere(const Point<T>& center, T radius)
                 : center_(center)
                 , radius_(radius)
             {
@@ -20,7 +20,7 @@ namespace shape {
             }
 
             T
-            distance(const geometry::d3::Point<T>& p) const {
+            distance(const Point<T>& p) const {
                 return (p - center_).norm() - radius_;
             }
         private:
@@ -35,7 +35,7 @@ namespace shape {
     struct distance {
         static_assert(std::is_floating_point<T>::value);
 
-        geometry::d3::Point<T> point;
+        Point<T> point;
 
         T operator()(const shape::Sphere<T>& v) const { return v.distance(point); }
     };

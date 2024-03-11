@@ -2,7 +2,6 @@
 #include <raymarching/raymarching.hpp>
 #include <variant>
 
-
 using Dimension = std::size_t;
 using Height    = raymarching::png::Height;
 using Width     = raymarching::png::Width;
@@ -12,7 +11,7 @@ const Width WIDTH           = 800;
 const Height HEIGHT         = 600;
 const Dimension DIMENSION   = WIDTH * HEIGHT;
 
-using Point     = geometry::d3::Point<float>;
+using Point     = raymarching::Point<float>;
 using Shape     = raymarching::Shape<float>;
 using Sphere    = raymarching::shape::Sphere<float>;
 
