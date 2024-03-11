@@ -1,6 +1,6 @@
 #include <geometry/geometry.hpp>
-#include <iostream>
 #include <raymarching/raymarching.hpp>
+#include <variant>
 
 
 using Dimension = std::size_t;
@@ -13,13 +13,14 @@ const Height HEIGHT         = 600;
 const Dimension DIMENSION   = WIDTH * HEIGHT;
 
 using Point     = geometry::d3::Point<float>;
+using Shape     = raymarching::Shape<float>;
 using Sphere    = raymarching::shape::Sphere<float>;
 
 const Point     ORIGIN(0.0f, 0.0f, -1.0f);
 const Sphere    SPHERE(Point(0.0f, 0.0f, 5.0f), 1.0f);
 
 inline Point
-process(const Sphere& s, const Point& origin, const Point& direction) {
+process(const Shape& s, const Point& origin, const Point& direction) {
     std::size_t STEPS   = 10;   // maximum number of iterations
     const float MINIMUM = 1e-3; // minimum distance to hit
     const float MAXIMUM = 1e+3; // maximum travel distance
@@ -27,7 +28,7 @@ process(const Sphere& s, const Point& origin, const Point& direction) {
 
     for (std::size_t i = 0; i < STEPS; i++){
         Point current   = origin + travel * direction;
-        float distance  = s.distance(current);
+        float distance  = std::visit(raymarching::distance<float>{current}, s);
 
         if (distance < MINIMUM) {
             return Point::yaxis();

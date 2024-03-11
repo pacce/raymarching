@@ -2,6 +2,7 @@
 #define RAYMARCHING_SHAPE_HPP__
 
 #include <geometry/geometry.hpp>
+#include <variant>
 
 namespace raymarching {
 namespace shape {
@@ -27,6 +28,17 @@ namespace shape {
             T                       radius_;
     };
 } // namespace shape
+    template <typename T>
+    using Shape = std::variant<shape::Sphere<T>>;
+
+    template <typename T>
+    struct distance {
+        static_assert(std::is_floating_point<T>::value);
+
+        geometry::d3::Point<T> point;
+
+        T operator()(const shape::Sphere<T>& v) const { return v.distance(point); }
+    };
 } // namespace raymarching
 
 #endif // RAYMARCHING_SHAPE_HPP__
