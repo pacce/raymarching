@@ -27,7 +27,7 @@ namespace shape {
 
             T
             distance(const Point<T>& p) const {
-                Point<T> u = maximum<T>(raymarching::absolute(p - center_) - dimensions_, 0.0);
+                Point<T> u = maximum<T>(absolute<T>(p - center_) - dimensions_, 0.0);
                 return u.norm();
             }
         private:
