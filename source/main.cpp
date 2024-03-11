@@ -12,10 +12,13 @@ const Height HEIGHT         = 600;
 const Dimension DIMENSION   = WIDTH * HEIGHT;
 
 using Point     = raymarching::Point<float>;
+
 using Shape     = raymarching::Shape<float>;
+using Box       = raymarching::shape::Box<float>;
 using Sphere    = raymarching::shape::Sphere<float>;
 
 const Point     ORIGIN(0.0f, 0.0f, -1.0f);
+const Box       BOX(Point(0.0f, 0.0f, 5.0f), 1.0f, 1.0f, 1.0f);
 const Sphere    SPHERE(Point(0.0f, 0.0f, 5.0f), 1.0f);
 
 inline Point
@@ -61,7 +64,7 @@ main(int, char**) {
 
     for (Dimension i = 0; i < DIMENSION; i++) {
         Point direction = coordinates[i] - ORIGIN;
-        Point marched   = process(SPHERE, ORIGIN, direction);
+        Point marched   = process(BOX, ORIGIN, direction);
         cs[i]           = Color(marched.x(), marched.y(), marched.z());
     }
     raymarching::png::write("sample.png", cs, WIDTH, HEIGHT);
