@@ -10,9 +10,7 @@ namespace shape {
     class Box {
         static_assert(std::is_floating_point<T>::value);
         public:
-            Box(const Point<T>& center, T width, T height, T depth) 
-                : center_(center) 
-                , dimensions_(width, height, depth)
+            Box(T width, T height, T depth) : dimensions_(width, height, depth)
             {
                 if ((not std::isfinite(width)) or (width <= 0)) {
                     throw std::runtime_error("width must be a finite positive number");
@@ -27,11 +25,9 @@ namespace shape {
 
             T
             distance(const Point<T>& p) const {
-                Point<T> u = maximum<T>(absolute<T>(p - center_) - dimensions_, 0.0);
-                return u.norm();
+                return maximum<T>(absolute<T>(p) - dimensions_, 0.0).norm();
             }
         private:
-            Point<T> center_;
             Point<T> dimensions_;
     };
 
@@ -39,10 +35,7 @@ namespace shape {
     class Sphere {
         static_assert(std::is_floating_point<T>::value);
         public:
-            Sphere(const Point<T>& center, T radius)
-                : center_(center)
-                , radius_(radius)
-            {
+            Sphere(T radius) : radius_(radius) {
                 if ((not std::isfinite(radius)) or (radius <= 0)) {
                     throw std::runtime_error("radius must be a finite positive number");
                 }
@@ -50,11 +43,10 @@ namespace shape {
 
             T
             distance(const Point<T>& p) const {
-                return (p - center_).norm() - radius_;
+                return p.norm() - radius_;
             }
         private:
-            Point<T>    center_;
-            T           radius_;
+            T radius_;
     };
 } // namespace shape
     template <typename T>

@@ -18,8 +18,8 @@ using Box       = raymarching::shape::Box<float>;
 using Sphere    = raymarching::shape::Sphere<float>;
 
 const Point     ORIGIN(0.0f, 0.0f, -1.0f);
-const Box       BOX(Point(0.0f, 0.0f, 5.0f), 1.0f, 1.0f, 1.0f);
-const Sphere    SPHERE(Point(0.0f, 0.0f, 5.0f), 1.0f);
+const Box       BOX(1.0f, 1.0f, 1.0f);
+const Sphere    SPHERE(1.0f);
 
 inline Point
 process(const Shape& s, const Point& origin, const Point& direction) {
@@ -29,8 +29,9 @@ process(const Shape& s, const Point& origin, const Point& direction) {
     float travel        = 0.0f;
 
     for (std::size_t i = 0; i < STEPS; i++){
+        Point translation(0.0f, 0.0f, 5.0f);
         Point current   = origin + travel * direction;
-        float distance  = std::visit(raymarching::distance<float>{current}, s);
+        float distance  = std::visit(raymarching::distance<float>{current - translation}, s);
 
         if (distance < MINIMUM) {
             return Point::yaxis();
