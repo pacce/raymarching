@@ -62,7 +62,7 @@ namespace geometry {
                 Eigen::Matrix<T, 4, 4> value = Eigen::Matrix<T, 4, 4>::Identity();
                 value(0, 0) = p.x();
                 value(1, 1) = p.y();
-                value(2, 2) = p.y();
+                value(2, 2) = p.z();
 
                 return Transformation<T>(value);
             }
