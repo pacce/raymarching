@@ -7,8 +7,8 @@ using Height    = raymarching::png::Height;
 using Width     = raymarching::png::Width;
 using Color     = raymarching::Color<float>;
 
-const Width WIDTH           = 800;
-const Height HEIGHT         = 600;
+const Width WIDTH           = 2560;
+const Height HEIGHT         = 1440;
 const Dimension DIMENSION   = WIDTH * HEIGHT;
 
 using Point     = raymarching::Point<float>;
@@ -21,9 +21,9 @@ const Point     ORIGIN(0.0f, 0.0f, -1.0f);
 const Box       BOX(1.0f, 1.0f, 1.0f);
 const Sphere    SPHERE(1.0f);
 
-inline Point
+inline Color
 process(const Shape& s, const Point& origin, const Point& direction) {
-    std::size_t STEPS   = 10;   // maximum number of iterations
+    std::size_t STEPS   = 80;   // maximum number of iterations
     const float MINIMUM = 1e-3; // minimum distance to hit
     const float MAXIMUM = 1e+3; // maximum travel distance
     float travel        = 0.0f;
@@ -34,13 +34,13 @@ process(const Shape& s, const Point& origin, const Point& direction) {
         float distance  = std::visit(raymarching::distance<float>{current - translation}, s);
 
         if (distance < MINIMUM) {
-            return Point::yaxis();
+            return Color::red();
         } else if (distance > MAXIMUM) {
-            return Point::zaxis();
+            return Color::black();
         }
         travel += distance;
     }
-    return Point::zaxis();
+    return Color::black();
 }
 
 int
@@ -65,8 +65,7 @@ main(int, char**) {
 
     for (Dimension i = 0; i < DIMENSION; i++) {
         Point direction = coordinates[i] - ORIGIN;
-        Point marched   = process(BOX, ORIGIN, direction);
-        cs[i]           = Color(marched.x(), marched.y(), marched.z());
+        cs[i]           = process(SPHERE, ORIGIN, direction);
     }
     raymarching::png::write("sample.png", cs, WIDTH, HEIGHT);
     return 0;
