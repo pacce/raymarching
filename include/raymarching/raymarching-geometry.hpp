@@ -70,22 +70,10 @@ namespace geometry {
 
             static Transformation<T>
             rotation(const Point<T>& axis, T radian) {
-                Eigen::Matrix<T, 4, 4> ys = Eigen::Matrix<T, 4, 4>::Identity();
-
                 Eigen::Vector<T, 3> u(axis.x(), axis.y(), axis.z());
-                Eigen::Matrix<T, 3, 3> xs = Eigen::AngleAxis<T>(radian, u).matrix();
-                
-                ys(0, 0) = xs(0, 0);
-                ys(0, 1) = xs(0, 1);
-                ys(0, 2) = xs(0, 2);
-                
-                ys(1, 0) = xs(1, 0);
-                ys(1, 1) = xs(1, 1);
-                ys(1, 2) = xs(1, 2);
 
-                ys(2, 0) = xs(2, 0);
-                ys(2, 1) = xs(2, 1);
-                ys(2, 2) = xs(2, 2);
+                Eigen::Matrix<T, 4, 4> ys   = Eigen::Matrix<T, 4, 4>::Identity();
+                ys.block(0, 0, 3, 3)        = Eigen::AngleAxis<T>(radian, u).matrix();
 
                 return Transformation<T>(ys);
             }
