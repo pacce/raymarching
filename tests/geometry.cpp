@@ -1,3 +1,4 @@
+#include <cmath>
 #include <gtest/gtest.h>
 #include <rapidcheck.h>
 #include <rapidcheck/gtest.h>
@@ -118,6 +119,36 @@ RC_GTEST_PROP(SCALING, COMPOSITION, (const Point& p)) {
 
     Transformation t = u * v * w;
     RC_ASSERT(t * p == result);
+}
+
+RC_GTEST_PROP(ROTATION, XAXIS, (const Point& p)) {
+    Transformation u = Transformation::rotation(Point::xaxis(),        0.0f);
+    Transformation v = Transformation::rotation(Point::xaxis(),        M_PI);
+    Transformation w = Transformation::rotation(Point::xaxis(), 2.0f * M_PI);
+
+    RC_ASSERT(u * p == p);
+    RC_ASSERT(v * p == Point(p.x(), -p.y(), -p.z()));
+    RC_ASSERT(w * p == p);
+}
+
+RC_GTEST_PROP(ROTATION, YAXIS, (const Point& p)) {
+    Transformation u = Transformation::rotation(Point::yaxis(),        0.0f);
+    Transformation v = Transformation::rotation(Point::yaxis(),        M_PI);
+    Transformation w = Transformation::rotation(Point::yaxis(), 2.0f * M_PI);
+
+    RC_ASSERT(u * p == p);
+    RC_ASSERT(v * p == Point(-p.x(), p.y(), -p.z()));
+    RC_ASSERT(w * p == p);
+}
+
+RC_GTEST_PROP(ROTATION, ZAXIS, (const Point& p)) {
+    Transformation u = Transformation::rotation(Point::zaxis(),        0.0f);
+    Transformation v = Transformation::rotation(Point::zaxis(),        M_PI);
+    Transformation w = Transformation::rotation(Point::zaxis(), 2.0f * M_PI);
+
+    RC_ASSERT(u * p == p);
+    RC_ASSERT(v * p == Point(-p.x(), -p.y(), p.z()));
+    RC_ASSERT(w * p == p);
 }
 
 int

@@ -1,8 +1,9 @@
 #ifndef RAYMARCHING_GEOMETRY_HPP__
 #define RAYMARCHING_GEOMETRY_HPP__
 
-#include <geometry/geometry.hpp>
 #include <Eigen/Core>
+#include <Eigen/Geometry>
+#include <geometry/geometry.hpp>
 
 namespace raymarching {
     template <typename T>
@@ -68,38 +69,25 @@ namespace geometry {
             }
 
             static Transformation<T>
-            yaw(T angle) {
-                Eigen::Matrix<T, 4, 4> value = Eigen::Matrix<T, 4, 4>::Identity();
-                value(0, 0) =  std::cos<T>(angle);
-                value(0, 1) = -std::sin<T>(angle);
-                value(1, 0) =  std::sin<T>(angle);
-                value(1, 1) =  std::cos<T>(angle);
+            rotation(const Point<T>& axis, T radian) {
+                Eigen::Matrix<T, 4, 4> ys = Eigen::Matrix<T, 4, 4>::Identity();
 
-                return Transformation<T>(value);    // rotation z-axis
-            }
+                Eigen::Vector<T, 3> u(axis.x(), axis.y(), axis.z());
+                Eigen::Matrix<T, 3, 3> xs = Eigen::AngleAxis<T>(radian, u).matrix();
+                
+                ys(0, 0) = xs(0, 0);
+                ys(0, 1) = xs(0, 1);
+                ys(0, 2) = xs(0, 2);
+                
+                ys(1, 0) = xs(1, 0);
+                ys(1, 1) = xs(1, 1);
+                ys(1, 2) = xs(1, 2);
 
-            static Transformation<T>
-            pitch(T angle) {
-                Eigen::Matrix<T, 4, 4> value = Eigen::Matrix<T, 4, 4>::Identity();
+                ys(2, 0) = xs(2, 0);
+                ys(2, 1) = xs(2, 1);
+                ys(2, 2) = xs(2, 2);
 
-                value(0, 0) =  std::cos<T>(angle);
-                value(0, 2) =  std::sin<T>(angle);
-                value(2, 0) = -std::sin<T>(angle);
-                value(2, 2) =  std::cos<T>(angle);
-
-                return Transformation<T>(value);    // rotation y-axis
-            }
-
-            static Transformation<T>
-            roll(T angle) {
-                Eigen::Matrix<T, 4, 4> value = Eigen::Matrix<T, 4, 4>::Identity();
-
-                value(1, 1) =  std::cos<T>(angle);
-                value(1, 2) = -std::sin<T>(angle);
-                value(2, 1) =  std::sin<T>(angle);
-                value(2, 2) =  std::cos<T>(angle);
-
-                return Transformation<T>(value);    // rotation x-axis
+                return Transformation<T>(ys);
             }
 
             operator Eigen::Matrix<T, 4, 4>() const { return value_; }
