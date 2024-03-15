@@ -64,7 +64,7 @@ main(int, char**) {
     }
 
     for (Dimension i = 0; i < DIMENSION; i++) {
-        Point direction = coordinates[i] - ORIGIN;
+        Point direction = (coordinates[i] - ORIGIN).normalized();
         cs[i]           = process(SPHERE, ORIGIN, direction);
     }
     raymarching::png::write("sample.png", cs, WIDTH, HEIGHT);
