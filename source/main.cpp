@@ -32,10 +32,16 @@ process(const Scene& scene, const Point& origin, const Point& direction) {
     for (std::size_t i = 0; i < STEPS; i++) {
         Point translation(0.0f, 0.0f, 5.0f);
         Point current   = origin + travel * direction;
-        float distance  = scene.distance(current - translation);
+        Point p         = current - translation;
+        float distance  = scene.distance(p);
 
         if (distance < MINIMUM) {
-            return Color::red();
+            Point normal = 0.5f * scene.gradient(p);
+            return Color(
+                      normal.x() + 0.5f
+                    , normal.y() + 0.5f
+                    , normal.z() + 0.5f
+                    );
         } else if (distance > MAXIMUM) {
             return Color::black();
         }
