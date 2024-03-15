@@ -24,11 +24,12 @@ const Sphere    SPHERE(1.0f);
 
 inline Color
 process(const Scene& scene, const Point& origin, const Point& direction) {
-    std::size_t STEPS   = 80;   // maximum number of iterations
+    std::size_t STEPS   = 32;   // maximum number of iterations
     const float MINIMUM = 1e-3; // minimum distance to hit
     const float MAXIMUM = 1e+3; // maximum travel distance
     float travel        = 0.0f;
 
+    Point light(2.0f, -5.0f, 3.0f);
     for (std::size_t i = 0; i < STEPS; i++) {
         Point translation(0.0f, 0.0f, 5.0f);
         Point current   = origin + travel * direction;
@@ -36,12 +37,11 @@ process(const Scene& scene, const Point& origin, const Point& direction) {
         float distance  = scene.distance(p);
 
         if (distance < MINIMUM) {
-            Point normal = 0.5f * scene.gradient(p);
-            return Color(
-                      normal.x() + 0.5f
-                    , normal.y() + 0.5f
-                    , normal.z() + 0.5f
-                    );
+            Point normal    = scene.gradient(p);
+            Point ray       = p - light;
+            float diffuse   = std::max<float>(0.0f, normal.dot(ray));
+
+            return Color::red() * diffuse;
         } else if (distance > MAXIMUM) {
             return Color::black();
         }
